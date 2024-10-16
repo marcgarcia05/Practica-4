@@ -14,10 +14,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     //Evitem code injection
     $form = htmlspecialchars($form);
 
-    if ($form == 'Inserir'){
-        header('Location: ./Vistes/inserir.php');
-    } elseif ($form == 'Modificar'){
-        header('Location: ./Vistes/modificar.php');
+    if ($form == 'signin'){
+        header('Location: ./Vistes/signin.view.php');
+    } elseif ($form == 'signup'){
+        header('Location: ./Vistes/signup.view.php');
     } elseif ($form == 'Eliminar'){
         header('Location: ./Vistes/eliminar.php');
     } elseif ($form == 'Consultar'){

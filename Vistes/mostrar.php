@@ -11,7 +11,6 @@ if (!isset($_SESSION['taula'])) {
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../Estils/css.css">
 </head>
 
 <body>

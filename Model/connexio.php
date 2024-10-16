@@ -1,7 +1,7 @@
 <?php
 //Parametres per realitzar la connexio amb la BBDD
 $dbHost="localhost";
-$dbNom="Pt02_Marc_Garcia";
+$dbNom="Pt04_Marc_Garcia";
 $dbUsuari="root";
 $dbPassword="";
 //Ens connectem

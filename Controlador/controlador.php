@@ -1,8 +1,7 @@
 <?php
 session_start();
-function inserir()
-{
-    require_once 'connexio.php';
+function inserir(){
+    require_once '../Model/connexio.php';
     
     //Guardem el contingut introduït per l'usuari
     $titol = $_POST['titol'];
@@ -48,9 +47,8 @@ function inserir()
     }
 }
 
-function modificar()
-{
-    require_once 'connexio.php';
+function modificar(){
+    require_once '../Model/connexio.php';
     
     //Guardem el contingut introduït per l'usuari
     $id = $_POST['id'];
@@ -115,7 +113,7 @@ function modificar()
 }
 
 function eliminar(){
-    require_once 'connexio.php';
+    require_once '../Model/connexio.php';
     
     //Guardem el contingut introduït per l'usuari
     $id = $_POST['id'];
@@ -161,8 +159,7 @@ function eliminar(){
 }
 
 function consultar(){
-    
-    require_once 'connexio.php';
+    require_once '../Model/connexio.php';
     
     //Guardem el contingut introduït per l'usuari
     $id = $_POST['id'];
@@ -218,7 +215,7 @@ function consultar(){
 }
 
 function mostrar() {
-    require_once 'connexio.php';
+    require_once '../Model/connexio.php';
 
     //Definim el número de registres per pàgina (rpp)
     $rpp = 5;
@@ -282,21 +279,26 @@ function mostrar() {
 }
 
 function mostrarAnonim() {
-    require_once 'connexio.php';
+    require_once '../Model/connexio.php';
 
     //Definim el número de registres per pàgina (rpp)
     $rpp = 5;
 
-    //Obtenim el número actual de pàgina amb Session, en cas de no haver-hi serà 1
-    $paginaActual = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-    //$paginaActual = (int)$_GET['page'];
-
-    //Referència del ùltim registre mostrat
-    $offset = ($paginaActual - 1) * $rpp;
-
     //Calculem el número de pàgines que necesitarem
     $totalArticulos = $connexio->query("SELECT COUNT(*) FROM articles")->fetchColumn();
     $totalPaginas = ceil($totalArticulos / $rpp);
+
+    //Obtenim el número actual de pàgina amb Session, en cas de no haver-hi serà 1
+    $paginaActual = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+
+    if($paginaActual > $totalPaginas){
+        $paginaActual = 1;
+    } else if (!is_int($paginaActual)){
+        $paginaActual = 1;
+    }
+
+    //Referència del ùltim registre mostrat
+    $offset = ($paginaActual - 1) * $rpp;
 
     //Preparem la consulta select
     $preparacio = $connexio->prepare("SELECT * FROM articles LIMIT :limit OFFSET :offset;");
@@ -341,15 +343,14 @@ function mostrarAnonim() {
 
     //Passem la taula a la Vista
     session_start();
-    print_r($_GET);
     $_SESSION['taula'] = $missatge;
     $_SESSION['paginacio'] = $paginacio;
-    header("Location: ../Vistes/index.php?page=" . $paginaActual);
+    header("Location: ../Vistes/index.view.php?page=" . $paginaActual);
     exit();
 }
 
 function tractarErrors($errors){
-    $missatge = "<br><div class='error'>";
+    $missatge = "<br><div class='alert alert-danger' role='alert'>";
     foreach ($errors as $error) {
         $missatge = $missatge . "<p>" . $error . "</p>";
     }
@@ -380,14 +381,11 @@ function mostrarMissatge($crud, $missatge){
     
 }
 
-if (isset($_POST['inserir'])) {
-    inserir();
-    include '../VISTES/inserir.php';
-} elseif (isset($_POST['modificar'])) {
-    modificar();
-    include '../VISTES/modificar.php';
+if (isset($_POST['login'])) {
+    header('Location: ../Vistes/login.view.php');
+} elseif (isset($_POST['signup'])) {
+    header('Location: ../Vistes/signup.view.php');
 } elseif (isset($_POST['eliminar'])) {
-    eliminar();
     include '../VISTES/eliminar.php';
 } elseif (isset($_POST['consultar'])) {
     consultar();
@@ -399,6 +397,5 @@ if (isset($_POST['inserir'])) {
     header('Location: ../');
 } else{
     mostrarAnonim();
-    include '../Vistes/index.php?page=';
 }
 session_destroy();
