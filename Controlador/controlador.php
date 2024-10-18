@@ -385,7 +385,11 @@ if (isset($_POST['login'])) {
     header('Location: ../Vistes/login.view.php');
 } elseif (isset($_POST['signup'])) {
     header('Location: ../Vistes/signup.view.php');
-} elseif (isset($_POST['eliminar'])) {
+} elseif (isset($_POST['logout'])) {
+    header('Location: ../Controlador/logout.php');
+}
+
+/*elseif (isset($_POST['eliminar'])) {
     include '../VISTES/eliminar.php';
 } elseif (isset($_POST['consultar'])) {
     consultar();
@@ -395,7 +399,7 @@ if (isset($_POST['login'])) {
     include '../VISTES/mostrar.php';
 } elseif (isset($_POST['enrere'])) {
     header('Location: ../');
-} else{
+} */else{
     mostrarAnonim();
 }
 session_destroy();

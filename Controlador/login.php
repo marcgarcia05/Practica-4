@@ -1,48 +1,91 @@
 <?php
-function inserir(){
+session_start();
+function login()
+{
     require_once '../Model/connexio.php';
-    
+
     //Guardem el contingut introduït per l'usuari
-    $titol = $_POST['titol'];
-    $cos = $_POST['cos'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
 
     //Evitem code injection
-    $titol = htmlspecialchars($titol);
-    $cos = htmlspecialchars($cos);
-
-    //Guardem els valors de l'usuari
-    $_SESSION['titol'] = $titol;
-    $_SESSION['cos'] = $cos;
+    $email = htmlspecialchars($email);
+    $password = htmlspecialchars($password);
 
     //Generem una llista buida on guardarem els diferents errors de l'usuari
     $errors = [];
 
-    //Comprovem que el nom no està buit
-    if (empty($titol)) {
-        array_push($errors, "ERROR - TITOL NO POT ESTAR BUIT!!");
-        //Comprovem que el nom no conté caràcters estranys
-    } elseif (!preg_match("/^[a-zA-Z]+$/", $titol)) {
-        array_push($errors, "ERROR - TITOL NOMES POT CONTENIR LLETRES!!");
+    //Comprovem la fortaleza de la password
+    if (empty($password)) {
+        array_push($errors, "ERROR - EL PASSWORD NO POT ESTAR BUIT!!");
     }
-    //Comprovem que el text no està buit
-    if (empty($cos)) {
-        array_push($errors, "ERROR - COS NO POT ESTAR BUIT!!");
+
+    //Comprovem que el correu no està buit
+    if (empty($email)) {
+        array_push($errors, "ERROR - EMAIL NO POT ESTAR BUIT!!");
+        //Comprovem que el correu té un format correcte
+    } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        array_push($errors, "ERROR - EL FORMAT DEL EMAIL NO ES CORRECTE!!");
     }
 
     //En cas de no tenir cap error, afegim les dades a la BBDD
     if (empty($errors)) {
-        $preparacio = $connexio->prepare("insert articles (Titol, Cos) VALUES ('$titol', '$cos');");
+        $preparacio = $connexio->prepare("SELECT * FROM usuaris WHERE (Email = ?);");
+        $preparacio->bindParam(1, $email);
         $preparacio->execute();
-        //Mostrem el missatge
-        $missatge = "<p class='ok'>DADES INTRODUIDES CORRECTAMENT!!</p>";
-        session_start();
-        $_SESSION['missatgeI'] = $missatge;
-        header("Location: ../Vistes/inserir.php");
-        exit();
+        $resultat = $preparacio->fetch(PDO::FETCH_ASSOC);
+        if (password_verify($password, $resultat['Contrasenya'])) {
+            $_SESSION['user_id'] = $resultat['ID'];
+            $_SESSION['username'] = $resultat['Nom_usuari'];
+            header("Location: ../Vistes/index.view.php");
+        } else {
+            $missatge = "<div class='alertes alert alert-danger d-flex align-items-center' role='alert'>ERROR - PASSWORD INCORRECTE!!</div>";
+            session_start();
+            $_SESSION['login'] = $missatge . $hash;
+            header("Location: ../Vistes/login.view.php");
+        }
     } else {
         //Mostrem els errors
         $missatge = tractarErrors($errors);
-        mostrarMissatge("inserir", $missatge);
+        mostrarMissatge($missatge);
     }
 }
-?>
+
+function tractarErrors($errors)
+{
+    $missatge = "<br><div class='alertes'>";
+    foreach ($errors as $error) {
+        $missatge = $missatge . "<div class='alerta z-3 text-end alert alert-danger' role='alert'>" . $error . "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></div>";
+    }
+    $missatge = $missatge . "</div>";
+    return $missatge;
+}
+
+function mostrarMissatge($missatge)
+{
+    session_start();
+    $_SESSION['login'] = $missatge;
+    header("Location: ../Vistes/login.view.php");
+    exit();
+}
+
+function comprovarUsuari($email)
+{
+    require "../Model/connexio.php";
+
+    $preparacio = $connexio->prepare("SELECT * FROM usuaris WHERE Email = ?");
+    $preparacio->bindParam(1, $email);
+    $preparacio->execute();
+    $resultatSelect = $preparacio->fetchAll();
+
+    //Comprovem si les dades existeixen
+    if (count($resultatSelect) == 1) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+if (isset($_POST['login'])) {
+    login();
+}

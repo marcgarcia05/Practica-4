@@ -35,7 +35,6 @@ if (!isset($_SESSION['taula'])) {
                     echo $_SESSION['paginacio'];
                     unset($_SESSION['paginacio']);
                 }
-                $_GET['pagina'] = $_GET['page'];
                 ?>
             </ul>
         </nav>

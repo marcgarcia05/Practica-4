@@ -1,12 +1,14 @@
 <?php
-function inserir(){
+session_start();
+
+function signup(){
     require_once '../Model/connexio.php';
-    
+
     //Guardem el contingut introduït per l'usuari
     $nom = $_POST['nom'];
     $email = $_POST['email'];
     $password = $_POST['password'];
-    $password2 = $_POST['password2'];
+    $password2 = $_POST['password_'];
 
     //Evitem code injection
     $nom = htmlspecialchars($nom);
@@ -19,41 +21,82 @@ function inserir(){
 
     //Comprovem que el nom no està buit
     if (empty($nom)) {
-        array_push($errors, "ERROR - TITOL NO POT ESTAR BUIT!!");
-        //Comprovem que el nom no conté caràcters estranys
-    } elseif (!preg_match("/^[a-zA-Z]+$/", $nom)) {
-        array_push($errors, "ERROR - TITOL NOMES POT CONTENIR LLETRES!!");
+        array_push($errors, "ERROR - EL NOM NO POT ESTAR BUIT!!");
     }
-    //Comprovem que el correu no està buit
-    if (empty($email)){
-        array_push($errors, "ERROR - CORREU NO POT ESTAR BUIT!!");
-        //Comprovem que el correu té un format correcte
-    } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
-        array_push($errors, "ERROR - EL FORMAT DEL CORREU NO ES CORRECTE!!");
-    }
+
     //Comprovem la fortaleza de la password
     $password_regex = "/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/";
-    if($password == $password2){
-        array_push($errors, "ERROR - LES CONTRAS NO COINCIDEIXEN!!");
-    } else if(preg_match($password_regex, $password) == 0){
-        array_push($errors, "ERROR - TITOL NOMES POT CONTENIR LLETRES!!");
+    if ($password == "" || $password2 == ""){
+        array_push($errors, "ERROR - EL PASSWORD NO POT ESTAR BUIT!!");
+    } else if ($password != $password2) {
+        array_push($errors, "ERROR - LES PASSWORDS NO COINCIDEIXEN!!");
+    } else if (preg_match($password_regex, $password) == 0) {
+        array_push($errors, "ERROR - PASWORD MOLT DEBIL!!");
     }
     
+    //Comprovem que el correu no està buit
+    if (empty($email)) {
+        array_push($errors, "ERROR - EMAIL NO POT ESTAR BUIT!!");
+        //Comprovem que el correu té un format correcte
+    } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        array_push($errors, "ERROR - EL FORMAT DEL EMAIL NO ES CORRECTE!!");
+    } else if (comprovarUsuari($email)){
+        array_push($errors, "ERROR - JA EXISTEIX UN COMPTE AMB AQUEST EMAIL!!");
+    }
 
     //En cas de no tenir cap error, afegim les dades a la BBDD
     if (empty($errors)) {
-        $preparacio = $connexio->prepare("insert articles (Titol, Cos) VALUES ('$titol', '$cos');");
+        $hash = password_hash($password, PASSWORD_BCRYPT);
+        $preparacio = $connexio->prepare("INSERT INTO usuaris (Nom_usuari, Contrasenya, Email) VALUES (?, ?, ?);");
+        $preparacio->bindParam(1, $nom);
+        $preparacio->bindParam(2, $hash);
+        $preparacio->bindParam(3, $email);
         $preparacio->execute();
         //Mostrem el missatge
-        $missatge = "<p class='ok'>DADES INTRODUIDES CORRECTAMENT!!</p>";
-        session_start();
-        $_SESSION['missatgeI'] = $missatge;
-        header("Location: ../Vistes/inserir.php");
+        $missatge = "<div class='alertes alert alert-success d-flex align-items-center' role='alert'>DADES INTRODUIDES CORRECTAMENT!!</div>";
+        $_SESSION['signup'] = $missatge;
+        header("Location: ../Vistes/signup.view.php");
         exit();
     } else {
         //Mostrem els errors
         $missatge = tractarErrors($errors);
-        mostrarMissatge("inserir", $missatge);
+        mostrarMissatge($missatge);
     }
 }
-?>
+
+
+function tractarErrors($errors){
+    $missatge = "<br><div class='alertes'>";
+    foreach ($errors as $error) {
+        $missatge = $missatge . "<div class='alerta z-3 text-end alert alert-danger' role='alert'>" . $error . "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></div>";
+    }
+    $missatge = $missatge . "</div>";
+    return $missatge;
+}
+
+function mostrarMissatge($missatge){
+    $_SESSION['signup'] = $missatge;
+    header("Location: ../Vistes/signup.view.php");
+    exit();
+}
+
+function comprovarUsuari($email){
+    require "../Model/connexio.php";
+
+    $preparacio = $connexio->prepare("SELECT * FROM usuaris WHERE Email = ?");
+    $preparacio->bindParam(1, $email);
+    $preparacio->execute();
+    $resultatSelect = $preparacio->fetchAll();
+
+    //Comprovem si les dades existeixen
+    if (count($resultatSelect) == 0) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+if (isset($_POST['signup'])) {
+    signup();
+}
+ 
