@@ -31,5 +31,4 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 } else {
     header('Location: ./Controlador/controlador.php');
 }
-session_destroy();
 ?>

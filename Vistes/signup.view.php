@@ -20,6 +20,13 @@ session_start()
                     <div class="card text-black" style="border-radius: 25px;">
                         <div class="card-body p-md-5">
                             <div class="row justify-content-center">
+                                <div class="position-relative">
+                                    <div class="position-absolute top-0 start-0">
+                                        <a href="../Vistes/index.view.php"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
+                                                <path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z" />
+                                            </svg></a>
+                                    </div>
+                                </div>
                                 <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
 
                                     <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
@@ -69,7 +76,7 @@ session_start()
                                         </div>
                                         <?php
                                         //Mostrem missatge
-                                        if(isset($_SESSION['signup'])){
+                                        if (isset($_SESSION['signup'])) {
                                             echo $_SESSION['signup'];
                                             unset($_SESSION['signup']);
                                         }

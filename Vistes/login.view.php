@@ -1,5 +1,5 @@
 <?php
-session_start()
+session_start();
 ?>
 <!DOCTYPE html>
 <html>
@@ -23,6 +23,13 @@ session_start()
                                 <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
                                     <img src="https://internship4you.com/assets/img/webp/login-img.webp" class="img-fluid">
                                 </div>
+                                <div class="position-relative">
+                                    <div class="position-absolute top-0 start-0">
+                                        <a href="../Vistes/index.view.php"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
+                                                <path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z" />
+                                            </svg></a>
+                                    </div>
+                                </div>
                                 <div class="col-md-10 col-lg-6 col-xl-7 align-items-center order-1 order-lg-2">
                                     <form action="../Controlador/login.php" method="post">
                                         <div class="divider d-flex align-items-center my-4">
@@ -30,12 +37,12 @@ session_start()
                                         </div>
 
                                         <div data-mdb-input-init class="form-outline mb-4">
-                                            <input type="email" id="email" name="email" class="form-control form-control-lg" value="<?php echo isset($_SESSION['email']) ? htmlspecialchars($_SESSION['email']) : ''; ?>"/>
+                                            <input type="email" id="email" name="email" class="form-control form-control-lg" value="<?php echo isset($_SESSION['email']) ? htmlspecialchars($_SESSION['email']) : ''; ?>" />
                                             <label class="form-label">Email</label>
                                         </div>
 
                                         <div data-mdb-input-init class="form-outline mb-3">
-                                            <input type="password" id="password" name="password" class="form-control form-control-lg" value="<?php echo isset($_SESSION['password']) ? htmlspecialchars($_SESSION['password']) : ''; ?>"/>
+                                            <input type="password" id="password" name="password" class="form-control form-control-lg" value="<?php echo isset($_SESSION['password']) ? htmlspecialchars($_SESSION['password']) : ''; ?>" />
                                             <label class="form-label">Password</label>
                                         </div>
 
@@ -52,7 +59,7 @@ session_start()
                                         </div>
                                         <?php
                                         //Mostrem missatge
-                                        if(isset($_SESSION['login'])){
+                                        if (isset($_SESSION['login'])) {
                                             echo $_SESSION['login'];
                                             unset($_SESSION['login']);
                                         }

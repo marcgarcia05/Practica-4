@@ -1,5 +1,6 @@
 <?php
 session_start();
+include "../Controlador/timeout.php";
 $paginaActual = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 if (!isset($_SESSION['taula'])) {
     header("Location: ../Controlador/controlador.php?page=" . $paginaActual);
@@ -11,11 +12,20 @@ if (!isset($_SESSION['taula'])) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="../Estils/login.css">
+    <link rel="stylesheet" href="../Estils/vista.css">
 </head>
 <body>
     <?php
     include('navbar.view.php');
+    if(isset($_SESSION['username'])){
+        echo "<form action='../Controlador/controlador.php' method='post' class='form-inline justify-content-arround'>
+            <button type='submit' name='afegir' class='btn btn-outline-success btn-lg mt-2 mx-2'>
+            <svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' fill='currentColor' class='bi bi-plus-square' viewBox='0 0 16 16'>
+                <path d='M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z'/>
+                <path d='M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4'/>
+            </svg>
+            </button></form>";
+    }
     ?>
     <div class="mt-3 text-center">
     <?php

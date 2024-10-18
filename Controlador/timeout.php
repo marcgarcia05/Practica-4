@@ -1,26 +1,27 @@
 <?php
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
+function timeout(){
+session_set_cookie_params(2400);
+// Iniciar la sesión
+session_start();
 
-// Tiempo de expiración de la sesión (40 minutos)
-$timeout = 5; // 40 minutos en segundos
+$session_timeout = 2400;
 
-// Verificar si existe el timestamp de la última actividad
-if (isset($_SESSION['LAST_ACTIVITY'])) {
-    // Calcular el tiempo desde la última actividad
-    $elapsed_time = time() - $_SESSION['LAST_ACTIVITY'];
-
-    // Verificar si ha pasado el tiempo de expiración
-    if ($elapsed_time > $timeout) {
-        // Si ha pasado el tiempo, cerrar la sesión
-        session_unset(); // Liberar variables de sesión
-        session_destroy(); // Destruir la sesión
-        header("Location: ../Vistes/index.view.php?message=sessionexpired");
+// Verifica si la sesión tiene un tiempo de última actividad
+if (isset($_SESSION['last_activity'])) {
+    // Calcula el tiempo que ha pasado desde la última actividad
+    $inactive_time = time() - $_SESSION['last_activity'];
+    
+    // Si el tiempo de inactividad supera el tiempo máximo permitido
+    if ($inactive_time > $session_timeout) {
+        // Destruye la sesión
+        session_unset();   // Limpia las variables de sesión
+        session_destroy(); // Destruye la sesión
+        header("Location: login.php"); // Redirige a la página de login u otra página
         exit();
     }
 }
 
-// Actualizar el timestamp de la última actividad
-$_SESSION['LAST_ACTIVITY'] = time(); // Guarda la última actividad
+// Actualiza el tiempo de última actividad
+$_SESSION['last_activity'] = time();
+}
 ?>

@@ -213,7 +213,7 @@ function consultar(){
         mostrarMissatge("consultar", $missatge);
     }
 }
-
+/*
 function mostrar() {
     require_once '../Model/connexio.php';
 
@@ -277,7 +277,7 @@ function mostrar() {
     header("Location: ../Vistes/mostrar.php?page=" . $paginaActual);
     exit();
 }
-
+*/
 function mostrarAnonim() {
     require_once '../Model/connexio.php';
 
@@ -309,44 +309,138 @@ function mostrarAnonim() {
     //Creem la taula HTML
     $missatge =  "<div class='container text-center'>\n<div class='row row-cols-3'>\n";
     $resultats = $preparacio->fetchAll();
-    foreach ($resultats as $row) {
-        //$missatge .= "<tr><th>" . $row['Titol'] . "</th><th>" . $row['Cos'] . "</th></tr>";
-        $missatge .= "<div class='col'><div class='card' style='width: 18rem;'>\n<div class='card-body'>\n
-                    <h5 class='card-title'>" .  $row['Titol'] . "</h5>\n<p class='card-text'>" . $row['Cos'] . "</p>\n
-                    \n</div>\n</div>\n</div>\n";
-    }
-    $missatge .= "</div>\n</div>";
-
-    //Mostrem fletxa enrere
-    if ($paginaActual > 1) {
-        $paginacio .= "<li class='page-item'>\n<a class='page-link' href=?page=". ($paginaActual - 1) .">Previous</a>\n</li>";
-    } else {
-        $paginacio .= "<li class='page-item disabled'>\n<a class='page-link'>Previous</a>\n</li>";
-    }
-
-    //Generem els "botons" de les pàgines
-    for ($i = 1; $i <= $totalPaginas; $i++) {
-        if ($i == $paginaActual) {
-            $paginacio .= "<li class='page-item active' aria-current='page'>
-                            <a class='page-link' href='?page=$i'>$i</a></li>";
-        } else {
-            $paginacio .= "<li class='page-item'><a class='page-link' href='?page=$i'>$i</a></li>";
+    if(count($resultats) > 0){
+        foreach ($resultats as $row) {
+            $missatge .= "<div class='col mt-3'><div class='card' style='width: 18rem;'>\n<div class='card-body'>\n
+                        <h5 class='card-title'>" .  $row['Titol'] . "</h5>\n<p class='card-text'>" . $row['Cos'] . "</p>\n
+                        \n<button type='button' class='btn btn-warning'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-pencil-square' viewBox='0 0 16 16'>
+                            <path d='M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z'/>
+                            <path fill-rule='evenodd' d='M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z'/>
+                        </svg></button>
+                        <button type='button' class='btn btn-danger mx-1'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-trash-fill' viewBox='0 0 16 16'>
+                            <path d='M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0'/>
+                        </svg></button></div>\n</div>\n</div>\n";
         }
-    }
-
-    //Mostrem fletxa endavant
-    if ($paginaActual < $totalPaginas) {
-        $paginacio .= "<li class='page-item'>\n<a class='page-link' href=?page=". ($paginaActual + 1) .">Next</a>\n</li>";
+        $missatge .= "</div>";
+    
+        //Mostrem fletxa enrere
+        if ($paginaActual > 1) {
+            $paginacio .= "<li class='page-item'>\n<a class='page-link' href=?page=". ($paginaActual - 1) .">Previous</a>\n</li>";
+        } else {
+            $paginacio .= "<li class='page-item disabled'>\n<a class='page-link'>Previous</a>\n</li>";
+        }
+    
+        //Generem els "botons" de les pàgines
+        for ($i = 1; $i <= $totalPaginas; $i++) {
+            if ($i == $paginaActual) {
+                $paginacio .= "<li class='page-item active' aria-current='page'>
+                                <a class='page-link' href='?page=$i'>$i</a></li>";
+            } else {
+                $paginacio .= "<li class='page-item'><a class='page-link' href='?page=$i'>$i</a></li>";
+            }
+        }
+    
+        //Mostrem fletxa endavant
+        if ($paginaActual < $totalPaginas) {
+            $paginacio .= "<li class='page-item'>\n<a class='page-link' href=?page=". ($paginaActual + 1) .">Next</a>\n</li>";
+        } else{
+            $paginacio .= "<li class='page-item disabled'>\n<a class='page-link'>Next</a>\n</li>";
+        }
+    
+        //Passem la taula a la Vista
+        session_start();
+        $_SESSION['taula'] = $missatge;
+        $_SESSION['paginacio'] = $paginacio;
+        header("Location: ../Vistes/index.view.php?page=" . $paginaActual);
+        exit();
     } else{
-        $paginacio .= "<li class='page-item disabled'>\n<a class='page-link'>Next</a>\n</li>";
+        //Passem la taula a la Vista
+        session_start();
+        $_SESSION['taula'] = "<p>No tens cap producte disponible</p>";
+        header("Location: ../Vistes/index.view.php?page=" . $paginaActual);
+        exit();
+    }
+    
+}
+
+function mostrar($userid) {
+    require_once '../Model/connexio.php';
+
+    //Definim el número de registres per pàgina (rpp)
+    $rpp = 5;
+
+    //Calculem el número de pàgines que necesitarem
+    $totalArticulos = $connexio->query("SELECT COUNT(*) FROM articles")->fetchColumn();
+    $totalPaginas = ceil($totalArticulos / $rpp);
+
+    //Obtenim el número actual de pàgina amb Session, en cas de no haver-hi serà 1
+    $paginaActual = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+
+    if($paginaActual > $totalPaginas){
+        $paginaActual = 1;
+    } else if (!is_int($paginaActual)){
+        $paginaActual = 1;
     }
 
-    //Passem la taula a la Vista
-    session_start();
-    $_SESSION['taula'] = $missatge;
-    $_SESSION['paginacio'] = $paginacio;
-    header("Location: ../Vistes/index.view.php?page=" . $paginaActual);
-    exit();
+    //Referència del ùltim registre mostrat
+    $offset = ($paginaActual - 1) * $rpp;
+
+    //Preparem la consulta select
+    $preparacio = $connexio->prepare("SELECT * FROM articles LIMIT :limit OFFSET :offset;");
+    $preparacio->bindValue(':limit', $rpp, PDO::PARAM_INT);
+    $preparacio->bindValue(':offset', $offset, PDO::PARAM_INT);
+    $preparacio->execute();
+
+    //Creem la taula HTML
+    $missatge =  "<div class='container text-center'>\n<div class='row row-cols-3'>\n";
+    $resultats = $preparacio->fetchAll();
+    if(count($resultats) > 0){
+        foreach ($resultats as $row) {
+            //$missatge .= "<tr><th>" . $row['Titol'] . "</th><th>" . $row['Cos'] . "</th></tr>";
+            $missatge .= "<div class='col'><div class='card' style='width: 18rem;'>\n<div class='card-body'>\n
+                        <h5 class='card-title'>" .  $row['Titol'] . "</h5>\n<p class='card-text'>" . $row['Cos'] . "</p>\n
+                        \n</div>\n</div>\n</div>\n";
+        }
+        $missatge .= "</div>\n</div>";
+    
+        //Mostrem fletxa enrere
+        if ($paginaActual > 1) {
+            $paginacio .= "<li class='page-item'>\n<a class='page-link' href=?page=". ($paginaActual - 1) .">Previous</a>\n</li>";
+        } else {
+            $paginacio .= "<li class='page-item disabled'>\n<a class='page-link'>Previous</a>\n</li>";
+        }
+    
+        //Generem els "botons" de les pàgines
+        for ($i = 1; $i <= $totalPaginas; $i++) {
+            if ($i == $paginaActual) {
+                $paginacio .= "<li class='page-item active' aria-current='page'>
+                                <a class='page-link' href='?page=$i'>$i</a></li>";
+            } else {
+                $paginacio .= "<li class='page-item'><a class='page-link' href='?page=$i'>$i</a></li>";
+            }
+        }
+    
+        //Mostrem fletxa endavant
+        if ($paginaActual < $totalPaginas) {
+            $paginacio .= "<li class='page-item'>\n<a class='page-link' href=?page=". ($paginaActual + 1) .">Next</a>\n</li>";
+        } else{
+            $paginacio .= "<li class='page-item disabled'>\n<a class='page-link'>Next</a>\n</li>";
+        }
+    
+        //Passem la taula a la Vista
+        session_start();
+        $_SESSION['taula'] = $missatge;
+        $_SESSION['paginacio'] = $paginacio;
+        header("Location: ../Vistes/index.view.php?page=" . $paginaActual);
+        exit();
+    } else{
+        //Passem la taula a la Vista
+        session_start();
+        $_SESSION['taula'] = "<p>No tens cap producte disponible</p>";
+        header("Location: ../Vistes/index.view.php?page=" . $paginaActual);
+        exit();
+    }
+    
 }
 
 function tractarErrors($errors){
@@ -381,7 +475,9 @@ function mostrarMissatge($crud, $missatge){
     
 }
 
-if (isset($_POST['login'])) {
+if(isset($_POST['afegir'])){
+    header('Location: ../Vistes/inserir.view.php');
+} elseif (isset($_POST['login'])) {
     header('Location: ../Vistes/login.view.php');
 } elseif (isset($_POST['signup'])) {
     header('Location: ../Vistes/signup.view.php');

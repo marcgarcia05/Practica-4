@@ -24,7 +24,7 @@ function login()
     if (empty($email)) {
         array_push($errors, "ERROR - EMAIL NO POT ESTAR BUIT!!");
         //Comprovem que el correu té un format correcte
-    } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         array_push($errors, "ERROR - EL FORMAT DEL EMAIL NO ES CORRECTE!!");
     }
 
@@ -35,7 +35,7 @@ function login()
         $preparacio->execute();
         $resultat = $preparacio->fetch(PDO::FETCH_ASSOC);
         if (password_verify($password, $resultat['Contrasenya'])) {
-            $_SESSION['user_id'] = $resultat['ID'];
+            $_SESSION['user_id'] = $resultat['userID'];
             $_SESSION['username'] = $resultat['Nom_usuari'];
             header("Location: ../Vistes/index.view.php");
         } else {
