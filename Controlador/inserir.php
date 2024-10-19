@@ -1,5 +1,6 @@
 <?php
-require_once '../Model/connexio.php';
+session_start();
+require_once '../Model/articles.php';
 
 //Guardem el contingut introduït per l'usuari
 $titol = $_POST['titol'];
@@ -10,10 +11,6 @@ $usuariID = $_SESSION['userID'];
 $titol = htmlspecialchars($titol);
 $cos = htmlspecialchars($cos);
 
-//Guardem els valors de l'usuari
-$_SESSION['titol'] = $titol;
-$_SESSION['cos'] = $cos;
-
 //Generem una llista buida on guardarem els diferents errors de l'usuari
 $errors = [];
 
@@ -21,8 +18,6 @@ $errors = [];
 if (empty($titol)) {
     array_push($errors, "ERROR - TITOL NO POT ESTAR BUIT!!");
     //Comprovem que el nom no conté caràcters estranys
-} elseif (!preg_match("/^[a-zA-Z]+$/", $titol)) {
-    array_push($errors, "ERROR - TITOL NOMES POT CONTENIR LLETRES!!");
 }
 //Comprovem que el text no està buit
 if (empty($cos)) {
@@ -31,16 +26,30 @@ if (empty($cos)) {
 
 //En cas de no tenir cap error, afegim les dades a la BBDD
 if (empty($errors)) {
-    $preparacio = $connexio->prepare("insert articles (Titol, Cos, User_ID) VALUES ('$titol', '$cos', '$usuariID');");
-    $preparacio->execute();
+    inserirArticle($titol, $cos, 1);
     //Mostrem el missatge
-    $missatge = "<p class='ok'>DADES INTRODUIDES CORRECTAMENT!!</p>";
+    $missatge = "<div class='alertes alert alert-success d-flex align-items-center' role='alert'>DADES INTRODUIDES CORRECTAMENT!!<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></div>";
     session_start();
-    $_SESSION['missatgeI'] = $missatge;
-    header("Location: ../Vistes/inserir.php");
+    $_SESSION['inserir'] = $missatge;
+    header("Location: ../Vistes/inserir.view.php");
     exit();
 } else {
     //Mostrem els errors
     $missatge = tractarErrors($errors);
-    mostrarMissatge("inserir", $missatge);
+    mostrarMissatge($missatge);
+}
+
+function tractarErrors($errors) {
+    $missatge = "<br><div class='alertes'>";
+    foreach ($errors as $error) {
+        $missatge .= "<div class='alerta alert alert-danger d-flex align-items-center' role='alert'>$error<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></div>";
+    }
+    $missatge .= "</div>";
+    return $missatge;
+}
+
+function mostrarMissatge($missatge) {
+    session_start();
+    $_SESSION['inserir'] = $missatge;
+    header("Location: ../Vistes/inserir.view.php");
 }

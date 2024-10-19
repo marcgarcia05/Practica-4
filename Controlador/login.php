@@ -1,9 +1,7 @@
 <?php
+require_once '../Model/usuaris.php';
 session_start();
-function login()
-{
-    require_once '../Model/connexio.php';
-
+function login(){
     //Guardem el contingut introduït per l'usuari
     $email = $_POST['email'];
     $password = $_POST['password'];
@@ -26,22 +24,20 @@ function login()
         //Comprovem que el correu té un format correcte
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         array_push($errors, "ERROR - EL FORMAT DEL EMAIL NO ES CORRECTE!!");
+    } elseif (count(getUsuari($email)) == 0){
+        array_push($errors, "ERROR - AQUEST CORREU NO EXISTEIX!!");
     }
 
     //En cas de no tenir cap error, afegim les dades a la BBDD
     if (empty($errors)) {
-        $preparacio = $connexio->prepare("SELECT * FROM usuaris WHERE (Email = ?);");
-        $preparacio->bindParam(1, $email);
-        $preparacio->execute();
-        $resultat = $preparacio->fetch(PDO::FETCH_ASSOC);
+        $resultat = getUsuari($email);
         if (password_verify($password, $resultat['Contrasenya'])) {
-            $_SESSION['user_id'] = $resultat['userID'];
+            $_SESSION['userID'] = $resultat['userID'];
             $_SESSION['username'] = $resultat['Nom_usuari'];
-            header("Location: ../Vistes/index.view.php");
+            header("Location: ../Vistes/index.view.php?page=1");
         } else {
-            $missatge = "<div class='alertes alert alert-danger d-flex align-items-center' role='alert'>ERROR - PASSWORD INCORRECTE!!</div>";
-            session_start();
-            $_SESSION['login'] = $missatge . $hash;
+            $missatge = "<div class='alertes alert alert-danger d-flex align-items-center' role='alert'>ERROR - PASSWORD INCORRECTE!!<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></div>";
+            $_SESSION['login'] = $missatge;
             header("Location: ../Vistes/login.view.php");
         }
     } else {
@@ -51,8 +47,7 @@ function login()
     }
 }
 
-function tractarErrors($errors)
-{
+function tractarErrors($errors){
     $missatge = "<br><div class='alertes'>";
     foreach ($errors as $error) {
         $missatge = $missatge . "<div class='alerta z-3 text-end alert alert-danger' role='alert'>" . $error . "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></div>";
@@ -61,29 +56,10 @@ function tractarErrors($errors)
     return $missatge;
 }
 
-function mostrarMissatge($missatge)
-{
+function mostrarMissatge($missatge){
     session_start();
     $_SESSION['login'] = $missatge;
     header("Location: ../Vistes/login.view.php");
-    exit();
-}
-
-function comprovarUsuari($email)
-{
-    require "../Model/connexio.php";
-
-    $preparacio = $connexio->prepare("SELECT * FROM usuaris WHERE Email = ?");
-    $preparacio->bindParam(1, $email);
-    $preparacio->execute();
-    $resultatSelect = $preparacio->fetchAll();
-
-    //Comprovem si les dades existeixen
-    if (count($resultatSelect) == 1) {
-        return false;
-    } else {
-        return true;
-    }
 }
 
 if (isset($_POST['login'])) {

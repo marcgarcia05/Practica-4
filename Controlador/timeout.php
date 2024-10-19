@@ -1,8 +1,9 @@
 <?php
 function timeout(){
-session_set_cookie_params(2400);
 // Iniciar la sesión
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 $session_timeout = 2400;
 
@@ -16,7 +17,7 @@ if (isset($_SESSION['last_activity'])) {
         // Destruye la sesión
         session_unset();   // Limpia las variables de sesión
         session_destroy(); // Destruye la sesión
-        header("Location: login.php"); // Redirige a la página de login u otra página
+        header("Location: ../Vistes/index.view.php"); // Redirige a la página de login u otra página
         exit();
     }
 }

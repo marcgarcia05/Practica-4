@@ -26,28 +26,28 @@ timeout();
         </div>
     </div>
     <div class="container mt-5">
-        <h1>Afegir producte</h1>
+        <h1>Modificar producte</h1>
         <br>
-        <form action='../Controlador/inserir.php' method='post' class='form-inline justify-content-arround'>
+        <form action='../Controlador/modificar.php' method='post' class='form-inline justify-content-arround'>
             <!-- Campo Títol -->
             <div class="mb-3">
                 <label for="titol" class="form-label">Títol</label>
-                <input type="text" class="form-control" id="titol" name="titol">
+                <input type="text" class="form-control" id="titol" name="titol" value="">
             </div>
 
             <!-- Campo Cos -->
             <div class="mb-3">
                 <label for="cos" class="form-label">Cos</label>
-                <textarea class="form-control" id="cos" rows="4" name="cos"></textarea>
+                <textarea class="form-control" id="cos" rows="4" name="cos" aria-valuetext=""></textarea>
             </div>
 
             <!-- Botón de Enviar -->
             <button type="submit" class="btn btn-primary">Enviar</button>
             <?php
             //Mostrem missatge
-            if (isset($_SESSION['inserir'])) {
-                echo $_SESSION['inserir'];
-                unset($_SESSION['inserir']);
+            if (isset($_SESSION['modificar'])) {
+                echo $_SESSION['modificar'];
+                unset($_SESSION['modificar']);
             }
             ?>
         </form>
