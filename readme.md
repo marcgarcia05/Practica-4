@@ -2,6 +2,11 @@
 
 El projecte es pot testejar en aquest [link](https://xampp.garc.pro/www/practiques/UF1/Practica%204/Controlador)
 
+Login per fer proves:
+
+- `Usuari`: profe@sapalomera.cat
+- `Password`: Profe123@
+
 ## Estructura del Projecte
 
 El projecte està organitzat en les següents carpetes principals:

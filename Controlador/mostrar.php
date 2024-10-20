@@ -20,12 +20,17 @@ function mostrarAnonim($paginaActual){
                             \n</div>\n</div>\n</div>\n";
         }
         $missatge .= "</div>\n</div>";
+
         $paginacio = "";
+        $enrere = "<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-caret-left-fill' viewBox='0 0 16 16'>
+                    <path d='m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z'/></svg>";
+        $seguent = "<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-caret-right-fill' viewBox='0 0 16 16'>
+                    <path d='m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z'/></svg>";
         //Mostrem fletxa enrere
         if ($paginaActual > 1) {
-            $paginacio .= "<li class='page-item'>\n<a class='page-link' href=?page=" . ($paginaActual - 1) . ">Previous</a>\n</li>";
+            $paginacio .= "<li class='page-item'>\n<a class='page-link' href=?page=" . ($paginaActual - 1) . ">". $enrere ."</a>\n</li>";
         } else {
-            $paginacio .= "<li class='page-item disabled'>\n<a class='page-link'>Previous</a>\n</li>";
+            $paginacio .= "<li class='page-item disabled'>\n<a class='page-link'>". $enrere ."</a>\n</li>";
         }
         //Generem els "botons" de les pàgines
         for ($i = 1; $i <= $totalPaginas; $i++) {
@@ -39,9 +44,9 @@ function mostrarAnonim($paginaActual){
 
         //Mostrem fletxa endavant
         if ($paginaActual < $totalPaginas) {
-            $paginacio .= "<li class='page-item'>\n<a class='page-link' href=?page=" . ($paginaActual + 1) . ">Next</a>\n</li>";
+            $paginacio .= "<li class='page-item'>\n<a class='page-link' href=?page=" . ($paginaActual + 1) . ">". $seguent ."</a>\n</li>";
         } else {
-            $paginacio .= "<li class='page-item disabled'>\n<a class='page-link'>Next</a>\n</li>";
+            $paginacio .= "<li class='page-item disabled'>\n<a class='page-link'>". $seguent ."</a>\n</li>";
         }
         //Passem la taula a la Vista
         $_SESSION['articles'] = $missatge;
@@ -86,11 +91,15 @@ function mostrar($paginaActual, $userID){
         }
         $missatge .= "</div>";
         $paginacio = "";
+        $enrere = "<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-caret-left-fill' viewBox='0 0 16 16'>
+                    <path d='m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z'/></svg>";
+        $seguent = "<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-caret-right-fill' viewBox='0 0 16 16'>
+                    <path d='m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z'/></svg>";
         //Mostrem fletxa enrere
         if ($paginaActual > 1) {
-            $paginacio .= "<li class='page-item'>\n<a class='page-link' href=?page=" . ($paginaActual - 1) . ">Previous</a>\n</li>";
+            $paginacio .= "<li class='page-item'>\n<a class='page-link' href=?page=" . ($paginaActual - 1) . ">". $enrere ."</a>\n</li>";
         } else {
-            $paginacio .= "<li class='page-item disabled'>\n<a class='page-link'>Previous</a>\n</li>";
+            $paginacio .= "<li class='page-item disabled'>\n<a class='page-link'>". $enrere ."</a>\n</li>";
         }
 
         //Generem els "botons" de les pàgines
@@ -105,9 +114,9 @@ function mostrar($paginaActual, $userID){
 
         //Mostrem fletxa endavant
         if ($paginaActual < $totalPaginas) {
-            $paginacio .= "<li class='page-item'>\n<a class='page-link' href=?page=" . ($paginaActual + 1) . ">Next</a>\n</li>";
+            $paginacio .= "<li class='page-item'>\n<a class='page-link' href=?page=" . ($paginaActual + 1) . ">". $seguent ."</a>\n</li>";
         } else {
-            $paginacio .= "<li class='page-item disabled'>\n<a class='page-link'>Next</a>\n</li>";
+            $paginacio .= "<li class='page-item disabled'>\n<a class='page-link'>". $seguent ."</a>\n</li>";
         }
         //Passem la taula a la Vista
         $_SESSION['articles'] = $missatge;

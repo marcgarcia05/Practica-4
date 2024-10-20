@@ -25,7 +25,7 @@ include  "../Controlador/timeout.php";
         </div>
     </div>
     <div class="container mt-5">
-        <h1>Afegir producte</h1>
+        <h1>Afegir article</h1>
         <br>
         <form action='../Controlador/inserir.php' method='post' class='form-inline justify-content-arround'>
             <!-- Campo Títol -->

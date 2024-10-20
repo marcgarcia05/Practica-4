@@ -40,7 +40,7 @@ function signup(){
         //Comprovem que el correu té un format correcte
     } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         array_push($errors, "ERROR - EL FORMAT DEL EMAIL NO ES CORRECTE!!");
-    } else if (!getUsuari($email)){
+    } else if (getUsuari($email)){
         array_push($errors, "ERROR - JA EXISTEIX UN COMPTE AMB AQUEST EMAIL!!");
     }
 
