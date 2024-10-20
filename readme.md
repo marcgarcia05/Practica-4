@@ -1,80 +1,77 @@
-# Documentació Pràctica 03
+# Documentació Pràctica 04
 
-## Funcions
+El projecte es pot testejar en aquest [link](https://xampp.garc.pro/www/practiques/UF1/Practica%204/Controlador)
 
-### `inserir()`
-Aquesta funció s'encarrega d'inserir un nou article a la base de dades.
+## Estructura del Projecte
 
-- **Passos**:
-  1. Requereix la connexió a la base de dades (`connexio.php`).
-  2. Recull les dades enviades pel formulari (`titol`, `cos`).
-  3. Escapa caràcters per evitar **code injection** (`htmlspecialchars`).
-  4. Valida que el títol i el cos no estiguin buits.
-  5. Si tot és correcte, insereix les dades a la base de dades i redirigeix l'usuari.
-  6. En cas d'errors, es mostren missatges d'error personalitzats.
+El projecte està organitzat en les següents carpetes principals:
 
-### `modificar()`
-Aquesta funció actualitza un article existent a la base de dades.
+- `Controlador/`: Conté els fitxers PHP que gestionen la lògica de l'aplicació.
+- `Model/`: Inclou els fitxers PHP que interactuen amb la base de dades.
+- `Vistes/`: Conté les vistes HTML/PHP que es mostren a l'usuari.
+- `Estils/`: Emmagatzema els fitxers CSS per al disseny de l'aplicació.
 
-- **Passos**:
-  1. Requereix la connexió a la base de dades (`connexio.php`).
-  2. Recull les dades del formulari (`id`, `titol`, `cos`).
-  3. Escapa caràcters per evitar **code injection**.
-  4. Valida que l'ID, el títol i el cos no estiguin buits.
-  5. Si tot és correcte, comprova si l'ID existeix a la base de dades i actualitza l'article.
-  6. Si l'ID no existeix o hi ha errors, es mostren missatges d'error.
+## Funcionalitats Principals
 
-### `eliminar()`
-Aquesta funció elimina un article de la base de dades.
+### 1. Gestió d'Usuaris
 
-- **Passos**:
-  1. Requereix la connexió a la base de dades (`connexio.php`).
-  2. Recull l'ID de l'article a eliminar.
-  3. Escapa caràcters per evitar **code injection**.
-  4. Comprova si l'ID no està buit i existeix a la base de dades.
-  5. Si tot és correcte, elimina l'article de la base de dades.
-  6. En cas d'errors, es mostren missatges d'error.
+#### Registre d'Usuaris (`signup.php`)
+- Permet als usuaris crear un nou compte.
+- Valida l'entrada de l'usuari (nom, email, contrasenya).
+- Emmagatzema la informació de l'usuari a la base de dades.
 
-### `consultar()`
-Aquesta funció consulta un article específic a la base de dades basant-se en el seu ID.
+#### Inici de Sessió (`login.php`)
+- Autentica als usuaris existents.
+- Crea una sessió per a l'usuari autenticat.
 
-- **Passos**:
-  1. Requereix la connexió a la base de dades (`connexio.php`).
-  2. Recull l'ID introduït per l'usuari.
-  3. Escapa caràcters per evitar **code injection**.
-  4. Comprova si l'ID està buit o no existeix a la base de dades.
-  5. Si tot és correcte, recupera les dades de l'article i les mostra en format de taula.
+#### Tancament de Sessió (`logout.php`)
+- Tanca la sessió de l'usuari actual.
 
-### `mostrar()`
-Aquesta funció mostra tots els articles de la base de dades amb paginació.
+### 2. Gestió d'Articles
 
-- **Passos**:
-  1. Requereix la connexió a la base de dades (`connexio.php`).
-  2. Defineix quants articles es mostraran per pàgina.
-  3. Calcula el número de pàgines necessàries segons el total d'articles.
-  4. Genera una taula HTML amb els articles.
-  5. Inclou controls de paginació per navegar entre pàgines.
+#### Mostrar Articles (`mostrar.php`)
+- Mostra una llista paginada d'articles.
+- Diferencia entre usuaris autenticats i anònims.
 
-### `tractarErrors($errors)`
-Aquesta funció tracta i genera missatges d'error en funció dels errors detectats.
+#### Inserir Articles (`inserir.php`)
+- Permet als usuaris autenticats crear nous articles.
 
-- **Paràmetres**:
-  - `$errors`: Array que conté els missatges d'error a mostrar.
-  
-- **Retorn**:
-  - Retorna un missatge HTML que inclou tots els errors.
+#### Modificar Articles (`modificar.php`)
+- Permet als usuaris autenticats editar els seus propis articles.
 
-### `mostrarMissatge($crud, $missatge)`
-Aquesta funció gestiona els missatges generats per les diferents operacions (CRUD) i els passa a la vista corresponent.
+#### Eliminar Articles (`eliminar.php`)
+- Permet als usuaris autenticats eliminar els seus propis articles.
 
-- **Paràmetres**:
-  - `$crud`: Determina quin tipus d'operació s'ha realitzat (`consultar`, `inserir`, `modificar`, `eliminar`).
-  - `$missatge`: El missatge a mostrar a la vista.
+## Models de Dades
 
-## Control de Flux
+### Usuaris (`usuaris.php`)
+- Funcions per a inserir i obtenir informació dels usuaris.
 
-- **Inserir**: Si es fa clic al botó "inserir", es crida la funció `inserir()` i es redirigeix a la vista corresponent.
-- **Modificar**: Si es fa clic al botó "modificar", es crida la funció `modificar()` i es redirigeix a la vista corresponent.
-- **Eliminar**: Si es fa clic al botó "eliminar", es crida la funció `eliminar()` i es redirigeix a la vista corresponent.
-- **Consultar**: Si es fa clic al botó "consultar", es crida la funció `consultar()` i es redirigeix a la vista corresponent.
-- **Mostrar**: Si la sessió conté la variable `mostrar`, es crida la funció `mostrar()`.
+### Articles (`articles.php`)
+- Funcions per a inserir, modificar, eliminar i consultar articles.
+- Inclou funcions per a la paginació d'articles.
+
+## Vistes
+
+- `index.view.php`: Pàgina principal que mostra la llista d'articles.
+- `login.view.php`: Formulari d'inici de sessió.
+- `signup.view.php`: Formulari de registre d'usuaris.
+- `inserir.view.php`: Formulari per a crear nous articles.
+- `modificar.view.php`: Formulari per a editar articles existents.
+
+## Seguretat
+
+- Ús de `htmlspecialchars()` per a prevenir injecció de codi XSS.
+- Contrasenyes hashades usant `password_hash()` i `password_verify()`.
+- Validació d'entrada d'usuari al costat del servidor.
+
+## Base de Dades
+
+- Utilitza MySQL/MariaDB.
+- Taules principals: `usuaris` i `articles`.
+
+## Característiques Addicionals
+
+- Paginació d'articles per a millorar el rendiment i l'experiència de l'usuari.
+- Sistema de missatges per a mostrar errors i confirmacions a l'usuari.
+- Disseny responsiu utilitzant Bootstrap.
