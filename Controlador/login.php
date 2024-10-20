@@ -32,7 +32,7 @@ function login(){
     if (empty($errors)) {
         $resultat = getUsuari($email);
         if (password_verify($password, $resultat['Contrasenya'])) {
-            $_SESSION['userID'] = $resultat['userID'];
+            $_SESSION['userID'] = $resultat['ID'];
             $_SESSION['username'] = $resultat['Nom_usuari'];
             header("Location: ../Vistes/index.view.php?page=1");
         } else {

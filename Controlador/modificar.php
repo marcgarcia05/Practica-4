@@ -1,24 +1,65 @@
 <?php
-function modificar() {
-    $id = htmlspecialchars($_POST['id']);
-    $titol = htmlspecialchars($_POST['titol']);
-    $cos = htmlspecialchars($_POST['cos']);
-    
+session_start();
+include '../Model/articles.php';
+function mostrarModificar($id){
+    $article = consultarArticle($id);
     $_SESSION['id'] = $id;
-    $_SESSION['titol'] = $titol;
-    $_SESSION['cos'] = $cos;
+    $_SESSION['titol'] = $article['Titol'];
+    $_SESSION['cos'] = $article['Cos'];
+    header("Location: ../Vistes/modificar.view.php");
+}
+
+function modificar($id, $titol, $cos) {
+    $id = htmlspecialchars($id);
+    $titol = htmlspecialchars($titol);
+    $cos = htmlspecialchars($cos);
 
     $errors = validarDades($titol, $cos, $id);
     if (empty($errors)) {
-        if (count(existeixArticle($id)) == 0) {
-            $_SESSION['missatgeM'] = "<p class='error'>AQUEST ID NO EXISTEIX!</p>";
+        if (count(consultarArticle($id)) == 0) {
+            $_SESSION['missatge'] = "<p>ERROR - AQUEST ID NO EXISTEIX!</p>";
         } else {
             modificarArticle($id, $titol, $cos);
-            $_SESSION['missatgeM'] = "<p class='ok'>DADES ACTUALITZADES CORRECTAMENT!</p>";
+            $_SESSION['missatge'] = "<div class='alertes alert alert-success d-flex align-items-center' role='alert'>DADES ACTUALITZADES CORRECTAMENT<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></div>";
         }
-        header("Location: ../Vistes/modificar.php");
+        header("Location: ../Controlador/index.php");
     } else {
         mostrarMissatge("modificar", tractarErrors($errors));
     }
+}
+
+function validarDades($titol, $cos, $id){
+    $errors = [];
+    if (empty($id)) {
+        array_push($errors, "ERROR - ID NO POT ESTAR BUIT!!");
+    }
+    if (empty($titol)) {
+        array_push($errors, "ERROR - TITOL NO POT ESTAR BUIT!!");
+    }
+    if (empty($cos)) {
+        array_push($errors, "ERROR - COS NO POT ESTAR BUIT!!");
+    }
+    return $errors;
+}
+
+function tractarErrors($errors){
+    $missatge = "<br><div class='alert alert-danger'>";
+    foreach ($errors as $error) {
+        $missatge .= "<p>$error</p>";
+    }
+    $missatge .= "</div>";
+    return $missatge;
+}
+
+function mostrarMissatge($crud, $missatge){
+    session_start();
+    $_SESSION['missatge'] = $missatge;
+    header("Location: ../Vistes/$crud.view.php");
+}
+
+if (isset($_POST['mostrarModificar'])){
+    mostrarModificar($_POST['mostrarModificar']);
+} elseif (isset($_POST['modificar'])){
+    modificar($_POST['idArticle'], $_POST['titol'], $_POST['cos']);
 }
 ?>

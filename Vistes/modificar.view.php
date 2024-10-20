@@ -1,7 +1,6 @@
 <?php
 session_start();
 include  "../Controlador/timeout.php";
-timeout();
 ?>
 <!DOCTYPE html>
 <html>
@@ -26,23 +25,27 @@ timeout();
         </div>
     </div>
     <div class="container mt-5">
-        <h1>Modificar producte</h1>
+        <h1>Article producte</h1>
         <br>
         <form action='../Controlador/modificar.php' method='post' class='form-inline justify-content-arround'>
             <!-- Campo Títol -->
             <div class="mb-3">
+                <label for="idArticle" class="form-label">ID</label>
+                <input type="text" class="form-control" id="idArticle" name="idArticle" value="<?php echo $_SESSION['id']; ?>" readonly>
+            </div>
+            <div class="mb-3">
                 <label for="titol" class="form-label">Títol</label>
-                <input type="text" class="form-control" id="titol" name="titol" value="">
+                <input type="text" class="form-control" id="titol" name="titol" value="<?php echo $_SESSION['titol']; ?>">
             </div>
 
             <!-- Campo Cos -->
             <div class="mb-3">
                 <label for="cos" class="form-label">Cos</label>
-                <textarea class="form-control" id="cos" rows="4" name="cos" aria-valuetext=""></textarea>
+                <textarea class="form-control" id="cos" rows="4" name="cos"><?php echo $_SESSION['cos']; ?></textarea>
             </div>
 
             <!-- Botón de Enviar -->
-            <button type="submit" class="btn btn-primary">Enviar</button>
+            <button type="submit" id="modificar" name="modificar" class="btn btn-primary">Enviar</button>
             <?php
             //Mostrem missatge
             if (isset($_SESSION['modificar'])) {

@@ -1,8 +1,7 @@
 <?php
 session_start();
-include "../Controlador/timeout.php";
 $paginaActual = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-if (!isset($_SESSION['taula'])) {
+if (!isset($_SESSION['articles'])) {
     header("Location: ../Controlador/index.php?page=" . $paginaActual);
 }
 ?>
@@ -33,10 +32,13 @@ if (!isset($_SESSION['taula'])) {
     ?>
     <div class="mt-3 text-center">
     <?php
-    //Mostrem missatge
-    if (isset($_SESSION['taula'])) {
-        echo $_SESSION['taula'];
-        unset($_SESSION['taula']);
+    if (isset($_SESSION['articles'])) {
+        echo $_SESSION['articles'];
+        unset($_SESSION['articles']);
+    }
+    if (isset($_SESSION['missatge'])) {
+        echo $_SESSION['missatge'];
+        unset($_SESSION['missatge']);
     }
     ?>
     </div>

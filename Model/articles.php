@@ -23,7 +23,7 @@ function consultarArticle($id){
     global $connexio;
     $preparacio = $connexio->prepare("SELECT * FROM articles WHERE id=:id;");
     $preparacio->execute([':id' => $id]);
-    return $preparacio->fetchAll();
+    return $preparacio->fetch();
 }
 
 function obtenirArticlesPaginats($offset, $rpp){
@@ -53,11 +53,4 @@ function obtenirTotalArticles(){
 function obtenirTotalArticlesUsuari($userID){
     global $connexio;
     return $connexio->query("SELECT COUNT(*) FROM articles WHERE User_ID=$userID")->fetchColumn();
-}
-
-function existeixArticle($id){
-    global $connexio;
-    $preparacio = $connexio->prepare('SELECT * FROM articles WHERE ID=:id;');
-    $preparacio->execute([':id' => $id]);
-    return $preparacio->fetchAll();
 }

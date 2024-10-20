@@ -1,4 +1,5 @@
 <?php
+include '../Controlador/timeout.php';
 if(isset($_SESSION['username'])){
     echo "<nav class='navbar navbar-dark bg-primary'>
     <a class='navbar-brand mx-2' href='#'>Benvingut/da " . $_SESSION['username'] . "</a>
