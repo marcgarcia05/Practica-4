@@ -15,21 +15,4 @@ function getUsuari($email){
     $resultatSelect = $preparacio->fetch(PDO::FETCH_ASSOC);
     return $resultatSelect;
 }
-
-
-function comprovarUsuari($email){
-    global $connexio;
-    $preparacio = $connexio->prepare("SELECT * FROM usuaris WHERE Email = ?");
-    $preparacio->bindParam(1, $email);
-    $preparacio->execute();
-    $resultatSelect = $preparacio->fetchAll();
-
-    //Comprovem si les dades existeixen
-    if (count($resultatSelect) == 1) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
 ?>

@@ -24,7 +24,7 @@ function login(){
         //Comprovem que el correu té un format correcte
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         array_push($errors, "ERROR - EL FORMAT DEL EMAIL NO ES CORRECTE!!");
-    } elseif (count(getUsuari($email)) == 0){
+    } elseif (!getUsuari($email)){
         array_push($errors, "ERROR - AQUEST CORREU NO EXISTEIX!!");
     }
 
@@ -34,10 +34,11 @@ function login(){
         if (password_verify($password, $resultat['Contrasenya'])) {
             $_SESSION['userID'] = $resultat['ID'];
             $_SESSION['username'] = $resultat['Nom_usuari'];
-            header("Location: ../Vistes/index.view.php?page=1");
+            $_SESSION['missatge'] = "<div class='alertes alert alert-success d-flex align-items-center' role='alert'>SESSIÓ INICIADA CORRECTAMENT!<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></div>";
+            header("Location: ../Controlador/index.php?page=1");
         } else {
             $missatge = "<div class='alertes alert alert-danger d-flex align-items-center' role='alert'>ERROR - PASSWORD INCORRECTE!!<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></div>";
-            $_SESSION['login'] = $missatge;
+            setcookie("login", $missatge, time() + 10);
             header("Location: ../Vistes/login.view.php");
         }
     } else {

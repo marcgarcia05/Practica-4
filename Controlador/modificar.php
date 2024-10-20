@@ -43,17 +43,17 @@ function validarDades($titol, $cos, $id){
 }
 
 function tractarErrors($errors){
-    $missatge = "<br><div class='alert alert-danger'>";
+    $missatge = "<br><div class='alertes'>";
     foreach ($errors as $error) {
-        $missatge .= "<p>$error</p>";
+        $missatge = $missatge . "<div class='alerta z-3 text-end alert alert-danger' role='alert'>" . $error . "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></div>";
     }
-    $missatge .= "</div>";
+    $missatge = $missatge . "</div>";
     return $missatge;
 }
 
 function mostrarMissatge($crud, $missatge){
     session_start();
-    $_SESSION['missatge'] = $missatge;
+    $_SESSION['modificar'] = $missatge;
     header("Location: ../Vistes/$crud.view.php");
 }
 

@@ -1,5 +1,6 @@
 <?php
 session_start();
+require '../Controlador/timeout.php';
 $paginaActual = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 if (!isset($_SESSION['articles'])) {
     header("Location: ../Controlador/index.php?page=" . $paginaActual);
@@ -39,6 +40,9 @@ if (!isset($_SESSION['articles'])) {
     if (isset($_SESSION['missatge'])) {
         echo $_SESSION['missatge'];
         unset($_SESSION['missatge']);
+    }
+    if (isset($_COOKIE['logout'])) {
+        echo $_COOKIE['logout'];
     }
     ?>
     </div>

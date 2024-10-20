@@ -33,7 +33,7 @@ session_start();
                                 <div class="col-md-10 col-lg-6 col-xl-7 align-items-center order-1 order-lg-2">
                                     <form action="../Controlador/login.php" method="post">
                                         <div class="divider d-flex align-items-center my-4">
-                                            <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign in</p>
+                                            <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Iniciar sessió</p>
                                         </div>
 
                                         <div data-mdb-input-init class="form-outline mb-4">

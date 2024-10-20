@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+include '../Model/usuaris.php';
 function signup(){
     require_once '../Model/connexio.php';
 
@@ -40,18 +40,14 @@ function signup(){
         //Comprovem que el correu té un format correcte
     } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         array_push($errors, "ERROR - EL FORMAT DEL EMAIL NO ES CORRECTE!!");
-    } else if (comprovarUsuari($email)){
+    } else if (!getUsuari($email)){
         array_push($errors, "ERROR - JA EXISTEIX UN COMPTE AMB AQUEST EMAIL!!");
     }
 
     //En cas de no tenir cap error, afegim les dades a la BBDD
     if (empty($errors)) {
         $hash = password_hash($password, PASSWORD_BCRYPT);
-        $preparacio = $connexio->prepare("INSERT INTO usuaris (Nom_usuari, Contrasenya, Email) VALUES (?, ?, ?);");
-        $preparacio->bindParam(1, $nom);
-        $preparacio->bindParam(2, $hash);
-        $preparacio->bindParam(3, $email);
-        $preparacio->execute();
+        inserirUsuari($nom, $email, $hash);
         //Mostrem el missatge
         $missatge = "<div class='alertes alert alert-success d-flex align-items-center' role='alert'>DADES INTRODUIDES CORRECTAMENT!!</div>";
         $_SESSION['signup'] = $missatge;
@@ -63,7 +59,6 @@ function signup(){
         mostrarMissatge($missatge);
     }
 }
-
 
 function tractarErrors($errors){
     $missatge = "<br><div class='alertes'>";
@@ -78,22 +73,6 @@ function mostrarMissatge($missatge){
     $_SESSION['signup'] = $missatge;
     header("Location: ../Vistes/signup.view.php");
     exit();
-}
-
-function comprovarUsuari($email){
-    require "../Model/connexio.php";
-
-    $preparacio = $connexio->prepare("SELECT * FROM usuaris WHERE Email = ?");
-    $preparacio->bindParam(1, $email);
-    $preparacio->execute();
-    $resultatSelect = $preparacio->fetchAll();
-
-    //Comprovem si les dades existeixen
-    if (count($resultatSelect) == 0) {
-        return false;
-    } else {
-        return true;
-    }
 }
 
 if (isset($_POST['signup'])) {

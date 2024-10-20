@@ -29,7 +29,7 @@ session_start()
                                 </div>
                                 <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
 
-                                    <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
+                                    <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Registrar-se</p>
 
                                     <form action="../Controlador/signup.php" method="post" class="mx-1 mx-md-4">
 
@@ -72,7 +72,7 @@ session_start()
                                         </div>
 
                                         <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                                            <button type="submit" name="signup" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg">Register</button>
+                                            <button type="submit" name="signup" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg">Registrar</button>
                                         </div>
                                         <?php
                                         //Mostrem missatge
