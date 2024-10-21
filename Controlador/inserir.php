@@ -26,7 +26,7 @@ if (empty($cos)) {
 
 //En cas de no tenir cap error, afegim les dades a la BBDD
 if (empty($errors)) {
-    inserirArticle($titol, $cos, 1);
+    inserirArticle($titol, $cos, $usuariID);
     //Mostrem el missatge
     $missatge = "<div class='alertes alert alert-success d-flex align-items-center' role='alert'>DADES INTRODUIDES CORRECTAMENT!!<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></div>";
     session_start();

@@ -49,7 +49,7 @@ function signup(){
         $hash = password_hash($password, PASSWORD_BCRYPT);
         inserirUsuari($nom, $email, $hash);
         //Mostrem el missatge
-        $missatge = "<div class='alertes alert alert-success d-flex align-items-center' role='alert'>DADES INTRODUIDES CORRECTAMENT!!</div>";
+        $missatge = "<div class='alertes alert alert-success d-flex align-items-center' role='alert'>REGISTRAT CORRECTAMENT!!</div>";
         $_SESSION['signup'] = $missatge;
         header("Location: ../Vistes/signup.view.php");
         exit();
