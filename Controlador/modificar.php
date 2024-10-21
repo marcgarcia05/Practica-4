@@ -1,6 +1,8 @@
 <?php
 session_start();
 include '../Model/articles.php';
+
+//Mostrem el article a modificar
 function mostrarModificar($id){
     $article = consultarArticle($id);
     $_SESSION['id'] = $id;
@@ -9,6 +11,7 @@ function mostrarModificar($id){
     header("Location: ../Vistes/modificar.view.php");
 }
 
+//Modifiquem l'article editat
 function modificar($id, $titol, $cos) {
     $id = htmlspecialchars($id);
     $titol = htmlspecialchars($titol);

@@ -1,6 +1,7 @@
 <?php
 include 'mostrar.php';
 session_start();
+//Controlem si la sessió esta iniciada, i controlem la pagina
 if (isset($_SESSION['username'])){
     if (isset($_GET['page'])){
         $paginaActual = (int)$_GET['page'];

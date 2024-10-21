@@ -9,7 +9,7 @@ function login(){
     //Evitem code injection
     $email = htmlspecialchars($email);
     $password = htmlspecialchars($password);
-
+   
     //Generem una llista buida on guardarem els diferents errors de l'usuari
     $errors = [];
 

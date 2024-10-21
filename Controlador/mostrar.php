@@ -1,10 +1,14 @@
 <?php
 require_once '../Model/articles.php';
+
 function mostrarAnonim($paginaActual){
     session_start();
+    //Registre per pagina
     $rpp = 5;
+
     $totalArticulos = obtenirTotalArticles();
     $totalPaginas = ceil($totalArticulos / $rpp);
+    //Si la pàgina que ens han passat és més gran que l'última pàgina que tenim disponible mostrarem la pàgina 1
     if ($paginaActual > $totalPaginas) {
         $paginaActual = 1;
     }
@@ -12,8 +16,10 @@ function mostrarAnonim($paginaActual){
     $offset = ($paginaActual - 1) * $rpp;
     $resultats = obtenirArticlesPaginats($offset, $rpp);
 
+    //Comprovem que hi han productes
     if (count($resultats) > 0) {
         $missatge =  "<div class='container text-center position-flex'>\n<div class='row row-cols-3 mx-auto'>\n";
+        //Generem els productes
         foreach ($resultats as $row) {
             $missatge .= "<div class='col mt-3'><div class='card' style='width: 18rem;'>\n<div class='card-body'>\n
                             <h5 class='card-title'>" .  $row['Titol'] . "</h5>\n<p class='card-text'>" . $row['Cos'] . "</p>\n
@@ -22,8 +28,10 @@ function mostrarAnonim($paginaActual){
         $missatge .= "</div>\n</div>";
 
         $paginacio = "";
+        //Boto enrere
         $enrere = "<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-caret-left-fill' viewBox='0 0 16 16'>
                     <path d='m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z'/></svg>";
+        //Boto següent
         $seguent = "<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-caret-right-fill' viewBox='0 0 16 16'>
                     <path d='m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z'/></svg>";
         //Mostrem fletxa enrere
@@ -63,10 +71,13 @@ function mostrarAnonim($paginaActual){
 
 function mostrar($paginaActual, $userID){
     session_start();
+    //Registre per pagina
     $rpp = 5;
+
     $totalArticulos = obtenirTotalArticlesUsuari($userID);
     $totalPaginas = ceil($totalArticulos / $rpp);
 
+    //Si la pàgina que ens han passat és més gran que l'última pàgina que tenim disponible mostrarem la pàgina 1
     if ($paginaActual > $totalPaginas) {
         $paginaActual = 1;
     }
@@ -74,9 +85,10 @@ function mostrar($paginaActual, $userID){
     $offset = ($paginaActual - 1) * $rpp;
     $resultats = obtenirArticlesUsuariPaginats($offset, $rpp, $userID);
 
-    //Creem la taula HTML
+    //Comprovem que hi han productes
     $missatge =  "<div class='container text-center'>\n<div class='row row-cols-3'>\n";
     if (count($resultats) > 0) {
+        //Generem els productes amb els botons de editar i eliminar
         foreach ($resultats as $row) {
             $missatge .= "<div class='col mt-3'><div class='card' style='width: 18rem;'>\n<div class='card-body'>\n
                             <h5 class='card-title'>" .  $row['Titol'] . "</h5>\n<p class='card-text'>" . $row['Cos'] . "</p>\n
@@ -91,8 +103,10 @@ function mostrar($paginaActual, $userID){
         }
         $missatge .= "</div>";
         $paginacio = "";
+        //Boto enrere
         $enrere = "<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-caret-left-fill' viewBox='0 0 16 16'>
                     <path d='m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z'/></svg>";
+        //Boto següent
         $seguent = "<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-caret-right-fill' viewBox='0 0 16 16'>
                     <path d='m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z'/></svg>";
         //Mostrem fletxa enrere

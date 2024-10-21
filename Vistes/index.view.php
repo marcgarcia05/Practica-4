@@ -17,7 +17,9 @@ if (!isset($_SESSION['articles'])) {
 </head>
 <body>
     <?php
+    //Mostrem el Navbar
     include('navbar.view.php');
+    //Mostrem el boto per inserir articles
     if(isset($_SESSION['username'])){
         echo "<form action='../Vistes/inserir.view.php' method='post' class='form-inline justify-content-arround'>
             <button type='submit' name='inserir' class='btn btn-outline-success btn-lg mt-2 mx-2'>
@@ -33,14 +35,17 @@ if (!isset($_SESSION['articles'])) {
     ?>
     <div class="mt-3 text-center">
     <?php
+    //Mostrem els articles
     if (isset($_SESSION['articles'])) {
         echo $_SESSION['articles'];
         unset($_SESSION['articles']);
     }
+    //Mostrem missatges
     if (isset($_SESSION['missatge'])) {
         echo $_SESSION['missatge'];
         unset($_SESSION['missatge']);
     }
+    //Mostrem missatge de logout
     if (isset($_COOKIE['logout'])) {
         echo $_COOKIE['logout'];
     }
