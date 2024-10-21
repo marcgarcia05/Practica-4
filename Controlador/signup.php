@@ -16,6 +16,10 @@ function signup(){
     $password = htmlspecialchars($password);
     $password2 = htmlspecialchars($password2);
 
+    $_SESSION['nom'] = $nom;
+    $_SESSION['email'] = $email;
+    $_SESSION['password'] = $password;
+
     //Generem una llista buida on guardarem els diferents errors de l'usuari
     $errors = [];
 

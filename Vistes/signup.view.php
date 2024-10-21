@@ -60,7 +60,7 @@ session_start()
                                         <div class="d-flex flex-row align-items-center mb-4">
                                             <i class="fas fa-key fa-lg me-3 fa-fw"></i>
                                             <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                                                <input type="password" id="password" name="password_" class="form-control" value="<?php echo isset($_SESSION['password2']) ? htmlspecialchars($_SESSION['password2']) : ''; ?>" />
+                                                <input type="password" id="password" name="password_" class="form-control" value="" />
                                                 <label class="form-label">Repeteix el password</label>
                                             </div>
                                         </div>
