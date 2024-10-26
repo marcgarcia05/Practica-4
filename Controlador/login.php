@@ -38,7 +38,7 @@ function login(){
             header("Location: ../Controlador/index.php?page=1");
         } else {
             $missatge = "<div class='alertes alert alert-danger d-flex align-items-center' role='alert'>ERROR - PASSWORD INCORRECTE!!<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></div>";
-            setcookie("login", $missatge, time() + 10);
+            $_SESSION['login'] =  $missatge;
             header("Location: ../Vistes/login.view.php");
         }
     } else {
